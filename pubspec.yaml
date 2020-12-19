@@ -1,0 +1,20 @@
+name: ava
+description: A new Flutter project.
+version: 0.0.1+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  camerawesome: ^0.2.1
+  image: ^2.1.19
+  path_provider: ^1.6.24
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
