@@ -6,7 +6,7 @@ import 'dart:typed_data';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:ava/domain/core/exceptions.dart';
-import 'package:ava/infrastructure/core/vision/ocr_response.dart';
+import 'package:ava/infrastructure/vision/models/ocr_response.dart';
 import 'package:ava/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';

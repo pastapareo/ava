@@ -3,10 +3,10 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:ava/infrastructure/core/api.dart';
-import 'package:ava/infrastructure/core/vision/line.dart';
-import 'package:ava/infrastructure/core/vision/ocr_response.dart';
-import 'package:ava/infrastructure/core/vision/region.dart';
-import 'package:ava/infrastructure/core/vision/word.dart';
+import 'package:ava/infrastructure/vision/models/line.dart';
+import 'package:ava/infrastructure/vision/models/ocr_response.dart';
+import 'package:ava/infrastructure/vision/models/region.dart';
+import 'package:ava/infrastructure/vision/models/word.dart';
 import 'package:ava/injection.dart';
 import 'package:ava/presentation/eye/widgets/bottom_bar.dart';
 import 'package:ava/utils/constants.dart';
@@ -59,13 +59,13 @@ class _EyeScreenState extends State<EyeScreen> {
                 /// listen for images preview stream
                 /// you can use it to process AI recognition or anything else...
                 print("-- init CamerAwesome images stream");
-                setState(() {
-                  previewStream = imageStream;
-                });
+                //  setState(() {
+                //    previewStream = imageStream;
+                //  });
 
-                _eyeMode == EyeModes.OCR
-                    ? imageStream.listen((Uint8List imageData) => _listen(imageData))
-                    : null;
+                if (_eyeMode.value == EyeModes.OCR) {
+                  imageStream.listen((Uint8List imageData) => _listen(imageData));
+                }
               },
             ),
           ),
@@ -77,8 +77,16 @@ class _EyeScreenState extends State<EyeScreen> {
                 _eyeMode.value = EyeModes.OCR;
               } else if (_eyeMode.value == EyeModes.OBJECT) {
                 _eyeMode.value = EyeModes.OBJECT;
+                // isSpeaking = false;
+                _checkProduct();
               } else if (_eyeMode.value == EyeModes.MONEY) {
                 _eyeMode.value = EyeModes.MONEY;
+                isSpeaking = false;
+                _checkMoney();
+              } else if (_eyeMode.value == EyeModes.PERSON) {
+                _eyeMode.value = EyeModes.PERSON;
+                // isSpeaking = false;
+                // _checkMoney();
               }
               setState(() {});
               print(_eyeMode.value);
@@ -145,11 +153,33 @@ class _EyeScreenState extends State<EyeScreen> {
           });
         });
       });
-      print(responseText);
-      await client.voice.speak(responseText);
-
-      // isSpeaking = false;
+      print("----------------------------------");
+      print('OCR RESPONSE: $responseText');
+      print("----------------------------------");
+      if (responseText.isNotEmpty) {
+        await client.voice.speak(responseText);
+      } else {
+        isSpeaking = false;
+      }
     }
+  }
+
+  _checkMoney() async {
+    final AvaApiClient client = await getIt.getAsync<AvaApiClient>();
+    print('Start ${DateTime.now()}');
+    Timer(const Duration(seconds: 2), () async {
+      print('Speak ${DateTime.now()}');
+      await client.voice.speak('\$100.00');
+    });
+  }
+
+  _checkProduct() async {
+    final AvaApiClient client = await getIt.getAsync<AvaApiClient>();
+    print('Start ${DateTime.now()}');
+    Timer(const Duration(seconds: 2), () async {
+      print('Speak ${DateTime.now()}');
+      await client.voice.speak('Kellogg\'s Eggo Waffles');
+    });
   }
 
   Widget _buildPreviewStream() {

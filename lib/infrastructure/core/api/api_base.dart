@@ -49,7 +49,6 @@ abstract class ApiBase {
 
   String _checkResponse(http.Response response) {
     final String responseBody = utf8.decode(response.bodyBytes);
-    print(responseBody);
     switch (response.statusCode) {
       case 200:
         return responseBody;

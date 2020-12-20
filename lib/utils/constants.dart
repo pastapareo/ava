@@ -4,6 +4,7 @@ enum EyeModes {
   OCR,
   OBJECT,
   MONEY,
+  PERSON,
 }
 
 EyeModes nextMode(EyeModes value) {

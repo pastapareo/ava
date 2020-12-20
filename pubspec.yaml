@@ -18,6 +18,7 @@ dependencies:
   injectable: ^1.0.4
   json_annotation: ^3.0.0
   image: ^2.1.19
+  line_awesome_flutter: ^1.0.1
   path_provider: ^1.6.24
   simple_logger: ^1.7.0
   xml: ^4.2.0
