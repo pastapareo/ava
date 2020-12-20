@@ -5,3 +5,13 @@ enum EyeModes {
   OBJECT,
   MONEY,
 }
+
+EyeModes nextMode(EyeModes value) {
+  final nextIndex = (value.index + 1) % EyeModes.values.length;
+  return EyeModes.values[nextIndex];
+}
+
+EyeModes previousMode(EyeModes value) {
+  final nextIndex = (value.index - 1) % EyeModes.values.length;
+  return EyeModes.values[nextIndex];
+}

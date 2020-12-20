@@ -27,14 +27,13 @@ class _EyeScreenState extends State<EyeScreen> {
   ValueNotifier<Size> _photoSize = ValueNotifier(null);
   ValueNotifier<Sensors> _sensor = ValueNotifier(Sensors.BACK);
   ValueNotifier<CaptureModes> _captureMode = ValueNotifier(CaptureModes.PHOTO);
+  ValueNotifier<EyeModes> _eyeMode = ValueNotifier(EyeModes.OCR);
 
   PictureController _pictureController = new PictureController();
 
   StreamSubscription<Uint8List> previewStreamSub;
   Stream<Uint8List> previewStream;
   Uint8List imgData;
-
-  EyeModes _eyeMode = EyeModes.OCR;
 
   bool isSpeaking = false;
 
@@ -72,6 +71,18 @@ class _EyeScreenState extends State<EyeScreen> {
           ),
           BottomBar(
             onCaptureTap: _takePhoto,
+            eyeMode: _eyeMode,
+            onEyeModeChanged: () {
+              if (_eyeMode.value == EyeModes.OCR) {
+                _eyeMode.value = EyeModes.OCR;
+              } else if (_eyeMode.value == EyeModes.OBJECT) {
+                _eyeMode.value = EyeModes.OBJECT;
+              } else if (_eyeMode.value == EyeModes.MONEY) {
+                _eyeMode.value = EyeModes.MONEY;
+              }
+              setState(() {});
+              print(_eyeMode.value);
+            },
           ),
         ],
       ),
