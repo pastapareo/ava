@@ -8,6 +8,8 @@ import 'package:ava/infrastructure/core/vision/ocr_response.dart';
 import 'package:ava/infrastructure/core/vision/region.dart';
 import 'package:ava/infrastructure/core/vision/word.dart';
 import 'package:ava/injection.dart';
+import 'package:ava/presentation/eye/widgets/bottom_bar.dart';
+import 'package:ava/utils/constants.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,6 +34,10 @@ class _EyeScreenState extends State<EyeScreen> {
   Stream<Uint8List> previewStream;
   Uint8List imgData;
 
+  EyeModes _eyeMode = EyeModes.OCR;
+
+  bool isSpeaking = false;
+
   @override
   void initState() {
     super.initState();
@@ -50,7 +56,7 @@ class _EyeScreenState extends State<EyeScreen> {
               captureMode: _captureMode,
               photoSize: _photoSize,
               sensor: _sensor,
-              /*   imagesStreamBuilder: (imageStream) {
+              imagesStreamBuilder: (imageStream) {
                 /// listen for images preview stream
                 /// you can use it to process AI recognition or anything else...
                 print("-- init CamerAwesome images stream");
@@ -58,32 +64,14 @@ class _EyeScreenState extends State<EyeScreen> {
                   previewStream = imageStream;
                 });
 
-                imageStream.listen((Uint8List imageData) => _listen(imageData));
-              },*/
+                _eyeMode == EyeModes.OCR
+                    ? imageStream.listen((Uint8List imageData) => _listen(imageData))
+                    : null;
+              },
             ),
           ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: FlatButton(
-              onPressed: () => {},
-              color: Colors.transparent,
-              padding: EdgeInsets.all(10.0),
-              child: Column(
-                // Replace with a Row for horizontal icon + text
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: _takePhoto,
-                    child: Icon(
-                      Icons.camera,
-                      color: Colors.cyan,
-                    ),
-                  ),
-                  Text("Add")
-                ],
-              ),
-            ),
+          BottomBar(
+            onCaptureTap: _takePhoto,
           ),
         ],
       ),
@@ -121,19 +109,35 @@ class _EyeScreenState extends State<EyeScreen> {
     client.voice.speak(responseText);
   }
 
-  _listen(Uint8List imageData) {
+  _listen(Uint8List imageData) async {
     //print("----------------------------------");
     // print(
     //     "...${DateTime.now().millisecond} NEW IMAGE RECEIVED: ${imageData.lengthInBytes} bytes");
 
     if (DateTime.now().second % 3 == 0 &&
         DateTime.now().millisecond >= 500 &&
-        DateTime.now().millisecond <= 600) {
-      final img = imgUtils.decodeImage(imageData);
+        DateTime.now().millisecond <= 600 &&
+        !isSpeaking) {
+      // final img = imgUtils.decodeImage(imageData);
       print("----------------------------------");
       print("...${DateTime.now()} NEW IMAGE RECEIVED: ${imageData.lengthInBytes} bytes");
-      print("==> img.width : ${img.width} | img.height : ${img.height}");
+      // print("==> img.width : ${img.width} | img.height : ${img.height}");
       print("----------------------------------");
+      isSpeaking = true;
+      final AvaApiClient client = await getIt.getAsync<AvaApiClient>();
+      final OcrResponse response = await client.vision.ocr(imageData);
+      String responseText = '';
+      response.regions.forEach((Region r) {
+        r.lines.forEach((Line l) {
+          l.words.forEach((Word w) {
+            responseText += ' ${w.text}';
+          });
+        });
+      });
+      print(responseText);
+      await client.voice.speak(responseText);
+
+      // isSpeaking = false;
     }
   }
 
