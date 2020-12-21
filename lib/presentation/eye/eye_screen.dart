@@ -237,6 +237,9 @@ class _EyeScreenState extends State<EyeScreen> {
     setState(() {
       _response = 'You\'re about to checkout 2 items with a total amount of \$2.44';
     });
+
+    // await client.ffdc.getBalance();
+    // await client.ffdc.createPayment('0543123467001', '0543123467030', 'Peter Parker');
   }
 
   Widget _buildPreviewStream() {

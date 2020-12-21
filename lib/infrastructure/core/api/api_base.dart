@@ -4,6 +4,7 @@ abstract class ApiBase {
   ApiBase(this._client) {
     _vision = Vision(this);
     _voice = Voice(this);
+    _ffdc = Ffdc(this);
   }
 
   final http.Client _client;
@@ -13,6 +14,9 @@ abstract class ApiBase {
 
   Voice _voice;
   Voice get voice => _voice;
+
+  Ffdc _ffdc;
+  Ffdc get ffdc => _ffdc;
 
   Future<String> post(String path, {Map<String, String> headers, dynamic body = ''}) {
     print('$apiEndpoint/$path');
