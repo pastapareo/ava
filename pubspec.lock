@@ -57,6 +57,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.8"
+  awesome_dialog:
+    dependency: "direct main"
+    description:
+      name: awesome_dialog
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -239,11 +246,39 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.11"
+  flare_dart:
+    dependency: transitive
+    description:
+      name: flare_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.3.4"
+  flare_flutter:
+    dependency: transitive
+    description:
+      name: flare_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.6"
   flutter:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_barcode_scanner:
+    dependency: "direct main"
+    description:
+      name: flutter_barcode_scanner
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
+    description:
+      name: flutter_plugin_android_lifecycle
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.11"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -541,6 +576,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.25.0"
+  sa_v1_migration:
+    dependency: transitive
+    description:
+      name: sa_v1_migration
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.2"
   shelf:
     dependency: transitive
     description:
@@ -555,6 +597,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.3"
+  simple_animations:
+    dependency: transitive
+    description:
+      name: simple_animations
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.4.0"
   simple_logger:
     dependency: "direct main"
     description:
@@ -609,6 +658,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  supercharged:
+    dependency: transitive
+    description:
+      name: supercharged
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.12.0"
+  supercharged_dart:
+    dependency: transitive
+    description:
+      name: supercharged_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.4.0"
   term_glyph:
     dependency: transitive
     description:

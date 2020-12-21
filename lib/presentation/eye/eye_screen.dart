@@ -197,7 +197,8 @@ class _EyeScreenState extends State<EyeScreen> {
         });
         Timer(const Duration(seconds: 2), () async {
           print('Speak ${DateTime.now()}');
-          await client.voice.speak('Swiss Miss hot cocoa mix was added to your cart');
+          await client.voice.speak(
+              'Swiss Miss hot cocoa mix was added to your cart. Your total balance is now \$2.45');
           setState(() {
             _response =
                 'Swiss Miss hot cocoa mix was added to your cart. Your total balance is now \$2.45';

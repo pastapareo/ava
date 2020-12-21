@@ -24,6 +24,7 @@ dependencies:
   simple_logger: ^1.7.0
   xml: ^4.2.0
   uuid: ^2.0.1
+  flutter_barcode_scanner: ^1.0.1
 
 dev_dependencies:
   flutter_test:
