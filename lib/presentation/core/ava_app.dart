@@ -19,6 +19,7 @@ class Ava extends StatelessWidget {
         router: Router(),
         initialRoute: '/',
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

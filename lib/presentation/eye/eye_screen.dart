@@ -10,6 +10,7 @@ import 'package:ava/infrastructure/vision/models/word.dart';
 import 'package:ava/injection.dart';
 import 'package:ava/presentation/eye/widgets/bottom_bar.dart';
 import 'package:ava/utils/constants.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -86,8 +87,7 @@ class _EyeScreenState extends State<EyeScreen> {
                 _checkMoney();
               } else if (_eyeMode.value == EyeModes.CART) {
                 _eyeMode.value = EyeModes.CART;
-                // isSpeaking = false;
-                // _checkMoney();
+                _showCart();
               }
               setState(() {});
               print(_eyeMode.value);
@@ -134,7 +134,7 @@ class _EyeScreenState extends State<EyeScreen> {
     //print("----------------------------------");
     // print(
     //     "...${DateTime.now().millisecond} NEW IMAGE RECEIVED: ${imageData.lengthInBytes} bytes");
-
+    isSpeaking = true;
     if (DateTime.now().second % 3 == 0 &&
         DateTime.now().millisecond >= 500 &&
         DateTime.now().millisecond <= 600 &&
@@ -167,6 +167,7 @@ class _EyeScreenState extends State<EyeScreen> {
   }
 
   _checkMoney() async {
+    isSpeaking = true;
     final AvaApiClient client = await getIt.getAsync<AvaApiClient>();
     print('Start ${DateTime.now()}');
     Timer(const Duration(seconds: 2), () async {
@@ -179,13 +180,14 @@ class _EyeScreenState extends State<EyeScreen> {
   }
 
   _checkProduct() async {
+    isSpeaking = false;
     final AvaApiClient client = await getIt.getAsync<AvaApiClient>();
     print('Start ${DateTime.now()}');
-    Timer(const Duration(seconds: 2), () async {
+    Timer(const Duration(seconds: 1), () async {
       print('Speak ${DateTime.now()}');
       await client.voice.speak('Swiss Miss hot cocoa mix');
       setState(() {
-        _response = 'Swiss Miss Marshmallow 28 grams';
+        _response = 'Swiss Miss hot cocoa mix';
       });
       Timer(const Duration(seconds: 3), () async {
         print('Speak ${DateTime.now()}');
@@ -193,7 +195,7 @@ class _EyeScreenState extends State<EyeScreen> {
         setState(() {
           _response = 'Swiss Miss Marshmallow 28 grams';
         });
-        Timer(const Duration(seconds: 3), () async {
+        Timer(const Duration(seconds: 2), () async {
           print('Speak ${DateTime.now()}');
           await client.voice.speak('Swiss Miss hot cocoa mix was added to your cart');
           setState(() {
@@ -205,7 +207,36 @@ class _EyeScreenState extends State<EyeScreen> {
     });
   }
 
-  _showCart() {}
+  _showCart() async {
+    isSpeaking = false;
+    AwesomeDialog(
+        context: context,
+        animType: AnimType.LEFTSLIDE,
+        headerAnimationLoop: false,
+        dialogType: DialogType.INFO,
+        title: 'Your Cart',
+        desc: 'You\'re about to pay \$2.44',
+        body: Center(
+          child: Column(
+            children: [
+              Text('Checkout two items for \$2.44'),
+              Image.network('https://blog.minhazav.dev/images/post14_image1.png'),
+            ],
+          ),
+        ),
+        btnCancelOnPress: () {},
+        btnOkOnPress: () {},
+        onDissmissCallback: () {
+          debugPrint('Dialog Dissmiss from callback');
+        })
+      ..show();
+    final AvaApiClient client = await getIt.getAsync<AvaApiClient>();
+    await client.voice
+        .speak('You\'re about to checkout 2 items with a total amount of \$2.44');
+    setState(() {
+      _response = 'You\'re about to checkout 2 items with a total amount of \$2.44';
+    });
+  }
 
   Widget _buildPreviewStream() {
     if (previewStream == null) return Container();
