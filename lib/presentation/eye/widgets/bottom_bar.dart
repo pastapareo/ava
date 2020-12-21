@@ -6,17 +6,18 @@ class BottomBar extends StatelessWidget {
   const BottomBar({
     Key key,
     @required this.onCaptureTap,
-    @required this.eyeMode,
     @required this.onEyeModeChanged,
+    @required this.eyeMode,
+    @required this.ocrText,
   }) : super(key: key);
 
   final Function onCaptureTap;
-  final ValueNotifier<EyeModes> eyeMode;
   final Function onEyeModeChanged;
+  final ValueNotifier<EyeModes> eyeMode;
+  final String ocrText;
 
   @override
   Widget build(BuildContext context) {
-    print(eyeMode);
     return Positioned(
       bottom: 0,
       left: 0,
@@ -76,8 +77,8 @@ class BottomBar extends StatelessWidget {
                             child: Icon(LineAwesomeIcons.font,
                                 size: eyeMode.value == EyeModes.OCR ? 56.0 : 24.0,
                                 color: eyeMode.value == EyeModes.OCR
-                                    ? Colors.pink
-                                    : Colors.blue),
+                                    ? Theme.of(context).accentColor
+                                    : Theme.of(context).primaryColor),
                           ),
                           Container(
                             width: eyeMode.value == EyeModes.OBJECT ? 90.0 : 60.0,
@@ -94,8 +95,26 @@ class BottomBar extends StatelessWidget {
                             child: Icon(LineAwesomeIcons.barcode,
                                 size: eyeMode.value == EyeModes.OBJECT ? 56.0 : 24.0,
                                 color: eyeMode.value == EyeModes.OBJECT
-                                    ? Colors.pink
-                                    : Colors.blue),
+                                    ? Theme.of(context).accentColor
+                                    : Theme.of(context).primaryColor),
+                          ),
+                          Container(
+                            width: eyeMode.value == EyeModes.CART ? 90.0 : 60.0,
+                            height: eyeMode.value == EyeModes.CART ? 90.0 : 60.0,
+                            decoration: BoxDecoration(
+                              color: Colors.black12,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                            ),
+                            child: Icon(LineAwesomeIcons.shopping_cart,
+                                size: eyeMode.value == EyeModes.CART ? 56.0 : 24.0,
+                                color: eyeMode.value == EyeModes.CART
+                                    ? Theme.of(context).accentColor
+                                    : Theme.of(context).primaryColor),
                           ),
                           Container(
                             width: eyeMode.value == EyeModes.MONEY ? 90.0 : 60.0,
@@ -112,26 +131,8 @@ class BottomBar extends StatelessWidget {
                             child: Icon(LineAwesomeIcons.money_bill,
                                 size: eyeMode.value == EyeModes.MONEY ? 56.0 : 24.0,
                                 color: eyeMode.value == EyeModes.MONEY
-                                    ? Colors.pink
-                                    : Colors.blue),
-                          ),
-                          Container(
-                            width: eyeMode.value == EyeModes.PERSON ? 90.0 : 60.0,
-                            height: eyeMode.value == EyeModes.PERSON ? 90.0 : 60.0,
-                            decoration: BoxDecoration(
-                              color: Colors.black12,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                                bottomLeft: Radius.circular(20),
-                                bottomRight: Radius.circular(20),
-                              ),
-                            ),
-                            child: Icon(LineAwesomeIcons.male,
-                                size: eyeMode.value == EyeModes.PERSON ? 56.0 : 24.0,
-                                color: eyeMode.value == EyeModes.PERSON
-                                    ? Colors.pink
-                                    : Colors.blue),
+                                    ? Theme.of(context).accentColor
+                                    : Theme.of(context).primaryColor),
                           ),
                         ],
                       ),
@@ -155,8 +156,12 @@ class BottomBar extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
-                            'Sample text asda sdasdasdsad asd asd',
-                            style: Theme.of(context).textTheme.bodyText1,
+                            ocrText,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                .copyWith(color: Colors.white70),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),

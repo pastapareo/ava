@@ -36,6 +36,7 @@ class _EyeScreenState extends State<EyeScreen> {
   Uint8List imgData;
 
   bool isSpeaking = false;
+  String _response = '';
 
   @override
   void initState() {
@@ -83,14 +84,15 @@ class _EyeScreenState extends State<EyeScreen> {
                 _eyeMode.value = EyeModes.MONEY;
                 isSpeaking = false;
                 _checkMoney();
-              } else if (_eyeMode.value == EyeModes.PERSON) {
-                _eyeMode.value = EyeModes.PERSON;
+              } else if (_eyeMode.value == EyeModes.CART) {
+                _eyeMode.value = EyeModes.CART;
                 // isSpeaking = false;
                 // _checkMoney();
               }
               setState(() {});
               print(_eyeMode.value);
             },
+            ocrText: _response,
           ),
         ],
       ),
@@ -170,6 +172,9 @@ class _EyeScreenState extends State<EyeScreen> {
     Timer(const Duration(seconds: 2), () async {
       print('Speak ${DateTime.now()}');
       await client.voice.speak('\$100.00');
+      setState(() {
+        _response = '\$100.00';
+      });
     });
   }
 
@@ -178,9 +183,29 @@ class _EyeScreenState extends State<EyeScreen> {
     print('Start ${DateTime.now()}');
     Timer(const Duration(seconds: 2), () async {
       print('Speak ${DateTime.now()}');
-      await client.voice.speak('Kellogg\'s Eggo Waffles');
+      await client.voice.speak('Swiss Miss hot cocoa mix');
+      setState(() {
+        _response = 'Swiss Miss Marshmallow 28 grams';
+      });
+      Timer(const Duration(seconds: 3), () async {
+        print('Speak ${DateTime.now()}');
+        await client.voice.speak('Swiss Miss Marshmallow 28 grams');
+        setState(() {
+          _response = 'Swiss Miss Marshmallow 28 grams';
+        });
+        Timer(const Duration(seconds: 3), () async {
+          print('Speak ${DateTime.now()}');
+          await client.voice.speak('Swiss Miss hot cocoa mix was added to your cart');
+          setState(() {
+            _response =
+                'Swiss Miss hot cocoa mix was added to your cart. Your total balance is now \$2.45';
+          });
+        });
+      });
     });
   }
+
+  _showCart() {}
 
   Widget _buildPreviewStream() {
     if (previewStream == null) return Container();
