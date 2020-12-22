@@ -2,11 +2,12 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:ava/infrastructure/core/api.dart';
 import 'package:ava/infrastructure/vision/models/line.dart';
 import 'package:ava/infrastructure/vision/models/ocr_response.dart';
 import 'package:ava/infrastructure/vision/models/region.dart';
 import 'package:ava/infrastructure/vision/models/word.dart';
+import 'package:ava/infrastructure/vision/vision.dart';
+import 'package:ava/infrastructure/voice/voice.dart';
 import 'package:ava/injection.dart';
 import 'package:ava/presentation/eye/widgets/bottom_bar.dart';
 import 'package:ava/utils/constants.dart';
@@ -116,8 +117,9 @@ class _EyeScreenState extends State<EyeScreen> {
     final img = file.readAsBytesSync();
     //print("==> img.width : ${img.width} | img.height : ${img.height}");
     print("----------------------------------");
-    final AvaApiClient client = await getIt.getAsync<AvaApiClient>();
-    final OcrResponse response = await client.vision.ocr(img);
+    final VisionApiClient visionClient = await getIt.getAsync<VisionApiClient>();
+    final VoiceApiClient voiceClient = await getIt.getAsync<VoiceApiClient>();
+    final OcrResponse response = await visionClient.vision.ocr(img);
     String responseText = '';
     response.regions.forEach((Region r) {
       r.lines.forEach((Line l) {
@@ -127,14 +129,14 @@ class _EyeScreenState extends State<EyeScreen> {
       });
     });
     print(responseText);
-    client.voice.speak(responseText);
+    voiceClient.tts.speak(responseText);
   }
 
   _listen(Uint8List imageData) async {
     //print("----------------------------------");
     // print(
     //     "...${DateTime.now().millisecond} NEW IMAGE RECEIVED: ${imageData.lengthInBytes} bytes");
-    isSpeaking = true;
+    // isSpeaking = true;
     if (DateTime.now().second % 3 == 0 &&
         DateTime.now().millisecond >= 500 &&
         DateTime.now().millisecond <= 600 &&
@@ -145,8 +147,9 @@ class _EyeScreenState extends State<EyeScreen> {
       // print("==> img.width : ${img.width} | img.height : ${img.height}");
       print("----------------------------------");
       isSpeaking = true;
-      final AvaApiClient client = await getIt.getAsync<AvaApiClient>();
-      final OcrResponse response = await client.vision.ocr(imageData);
+      final VisionApiClient visionClient = await getIt.getAsync<VisionApiClient>();
+      final VoiceApiClient voiceClient = await getIt.getAsync<VoiceApiClient>();
+      final OcrResponse response = await visionClient.vision.ocr(imageData);
       String responseText = '';
       response.regions.forEach((Region r) {
         r.lines.forEach((Line l) {
@@ -159,7 +162,7 @@ class _EyeScreenState extends State<EyeScreen> {
       print('OCR RESPONSE: $responseText');
       print("----------------------------------");
       if (responseText.isNotEmpty) {
-        await client.voice.speak(responseText);
+        await voiceClient.tts.speak(responseText);
       } else {
         isSpeaking = false;
       }
@@ -168,36 +171,41 @@ class _EyeScreenState extends State<EyeScreen> {
 
   _checkMoney() async {
     isSpeaking = true;
-    final AvaApiClient client = await getIt.getAsync<AvaApiClient>();
+    final VisionApiClient visionClient = await getIt.getAsync<VisionApiClient>();
+    final VoiceApiClient voiceClient = await getIt.getAsync<VoiceApiClient>();
     print('Start ${DateTime.now()}');
     Timer(const Duration(seconds: 2), () async {
       print('Speak ${DateTime.now()}');
-      await client.voice.speak('\$100.00');
+      await voiceClient.tts.speak('\$100.00');
       setState(() {
         _response = '\$100.00';
       });
+      //var response = await client.ffdc.getBalance();
+      //print('FFDC Get Balance: $response');
+      print("----------------------------------");
     });
   }
 
   _checkProduct() async {
     isSpeaking = false;
-    final AvaApiClient client = await getIt.getAsync<AvaApiClient>();
+    final VisionApiClient visionClient = await getIt.getAsync<VisionApiClient>();
+    final VoiceApiClient voiceClient = await getIt.getAsync<VoiceApiClient>();
     print('Start ${DateTime.now()}');
     Timer(const Duration(seconds: 1), () async {
       print('Speak ${DateTime.now()}');
-      await client.voice.speak('Swiss Miss hot cocoa mix');
+      await voiceClient.tts.speak('Swiss Miss hot cocoa mix');
       setState(() {
         _response = 'Swiss Miss hot cocoa mix';
       });
       Timer(const Duration(seconds: 3), () async {
         print('Speak ${DateTime.now()}');
-        await client.voice.speak('Swiss Miss Marshmallow 28 grams');
+        await voiceClient.tts.speak('Swiss Miss Marshmallow 28 grams');
         setState(() {
           _response = 'Swiss Miss Marshmallow 28 grams';
         });
         Timer(const Duration(seconds: 2), () async {
           print('Speak ${DateTime.now()}');
-          await client.voice.speak(
+          await voiceClient.tts.speak(
               'Swiss Miss hot cocoa mix was added to your cart. Your total balance is now \$2.45');
           setState(() {
             _response =
@@ -231,8 +239,9 @@ class _EyeScreenState extends State<EyeScreen> {
           debugPrint('Dialog Dissmiss from callback');
         })
       ..show();
-    final AvaApiClient client = await getIt.getAsync<AvaApiClient>();
-    await client.voice
+    final VisionApiClient visionClient = await getIt.getAsync<VisionApiClient>();
+    final VoiceApiClient voiceClient = await getIt.getAsync<VoiceApiClient>();
+    await voiceClient.tts
         .speak('You\'re about to checkout 2 items with a total amount of \$2.44');
     setState(() {
       _response = 'You\'re about to checkout 2 items with a total amount of \$2.44';

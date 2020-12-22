@@ -1,8 +1,4 @@
-import 'package:ava/infrastructure/ffdc/amount.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'payment_request.freezed.dart';
-part 'payment_request.g.dart';
+part of ava.infrastructure.ffdc.api;
 
 @freezed
 abstract class PaymentRequest with _$PaymentRequest {

@@ -1,54 +1,20 @@
-part of ava.infrastructure.core.api;
+part of ava.infrastructure.retailbanking.api;
 
-abstract class ApiBase {
-  ApiBase(this._client) {
-    _vision = Vision(this);
-    _voice = Voice(this);
-    _ffdc = Ffdc(this);
+abstract class RetailBankingApiBase {
+  RetailBankingApiBase(this._client) {
+    _accounts = Accounts(this);
   }
 
   final http.Client _client;
 
-  Vision _vision;
-  Vision get vision => _vision;
+  Accounts _accounts;
+  Accounts get accounts => _accounts;
 
-  Voice _voice;
-  Voice get voice => _voice;
-
-  Ffdc _ffdc;
-  Ffdc get ffdc => _ffdc;
-
-  Future<String> post(String path, {Map<String, String> headers, dynamic body = ''}) {
-    print('$apiEndpoint/$path');
-    return _postImpl('$apiEndpoint/$path', headers, body);
-  }
-
-  Future<String> _postImpl(String url, Map<String, String> headers, dynamic body) async {
-    /*var uri = Uri.parse(url);
-    var request = new http.Request("POST", uri)
-      ..headers['Ocp-Apim-Subscription-Key'] = "f39e0d015de844eebf61672af275bbd4"
-      ..headers['Content-Type'] = "application/octet-stream"
-      ..bodyBytes = body;
-
-    var response = await request.send();
-    response.stream.transform(utf8.decoder).listen((value) {
-      return (value);
-    });*/
-
-    final http.Response response = await _client.post(
-      url,
-      headers: _getHeaders(headers),
-      body: body,
-      //encoding: Encoding.getByName('utf-8'),
-    );
-
+  Future<String> post(String path,
+      {Map<String, String> headers, dynamic body = ''}) async {
+    String url = '$ffdcApiEndpoint/$path';
+    final http.Response response = await _client.post(url, headers: body);
     return _checkResponse(response);
-  }
-
-  Map<String, String> _getHeaders(Map<String, String> headers) {
-    headers['Content-Type'] = 'application/octet-stream"';
-    headers['Ocp-Apim-Subscription-Key'] = 'f39e0d015de844eebf61672af275bbd4';
-    return headers;
   }
 
   String _checkResponse(http.Response response) {
@@ -74,7 +40,7 @@ abstract class ApiBase {
       return 'An error occurred';
     }
 
-    /*try {
+    try {
       final dynamic jsonResponse = json.decode(response);
 
       message = jsonResponse['message'] ?? jsonResponse;
@@ -92,7 +58,7 @@ abstract class ApiBase {
       }
     } catch (error) {
       // getIt<SimpleLogger>().severe('Failed to parse error: $error');
-    }*/
+    }
 
     // getIt<SimpleLogger>().severe('$code: $message');
     return message;

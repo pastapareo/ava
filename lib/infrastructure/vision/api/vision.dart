@@ -1,7 +1,7 @@
-part of ava.infrastructure.core.api;
+part of ava.infrastructure.vision.api;
 
-class Vision extends ApiEndpointBase {
-  Vision(AvaApiClient client) : super(client);
+class Vision extends VisionApiEndpointBase {
+  Vision(VisionApiClient client) : super(client);
 
   String get _path => 'ocr?language=unk&detectOrientation=true';
 

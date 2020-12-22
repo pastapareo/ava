@@ -1,3 +1,4 @@
+import 'package:ava/presentation/core/app_theme.dart';
 import 'package:ava/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -50,7 +51,7 @@ class BottomBar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: 100,
+              height: 120,
               child: Stack(
                 children: [
                   // Container(
@@ -63,76 +64,58 @@ class BottomBar extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Container(
-                            width: eyeMode.value == EyeModes.OCR ? 90.0 : 60.0,
-                            height: eyeMode.value == EyeModes.OCR ? 90.0 : 60.0,
+                            width: eyeMode.value == EyeModes.OCR ? 100.0 : 85.0,
+                            height: eyeMode.value == EyeModes.OCR ? 100.0 : 85.0,
                             decoration: BoxDecoration(
-                              color: Colors.black12,
+                              color: eyeMode.value == EyeModes.OCR
+                                  ? AppTheme.fuchsia.shade700
+                                  : AppTheme.violet.shade700,
                               borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                                bottomLeft: Radius.circular(20),
-                                bottomRight: Radius.circular(20),
+                                topLeft: Radius.circular(50),
+                                topRight: Radius.circular(50),
+                                bottomLeft: Radius.circular(50),
+                                bottomRight: Radius.circular(50),
                               ),
                             ),
-                            child: Icon(LineAwesomeIcons.font,
-                                size: eyeMode.value == EyeModes.OCR ? 56.0 : 24.0,
-                                color: eyeMode.value == EyeModes.OCR
-                                    ? Theme.of(context).accentColor
-                                    : Theme.of(context).primaryColor),
+                            child: Icon(LineAwesomeIcons.file_invoice,
+                                size: eyeMode.value == EyeModes.OCR ? 70.0 : 50.0,
+                                color: Theme.of(context).backgroundColor),
                           ),
                           Container(
-                            width: eyeMode.value == EyeModes.OBJECT ? 90.0 : 60.0,
-                            height: eyeMode.value == EyeModes.OBJECT ? 90.0 : 60.0,
+                            width: eyeMode.value == EyeModes.OBJECT ? 100.0 : 85.0,
+                            height: eyeMode.value == EyeModes.OBJECT ? 100.0 : 85.0,
                             decoration: BoxDecoration(
-                              color: Colors.black12,
+                              color: eyeMode.value == EyeModes.OBJECT
+                                  ? AppTheme.fuchsia.shade700
+                                  : AppTheme.violet.shade700,
                               borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                                bottomLeft: Radius.circular(20),
-                                bottomRight: Radius.circular(20),
+                                topLeft: Radius.circular(50),
+                                topRight: Radius.circular(50),
+                                bottomLeft: Radius.circular(50),
+                                bottomRight: Radius.circular(50),
                               ),
                             ),
                             child: Icon(LineAwesomeIcons.barcode,
-                                size: eyeMode.value == EyeModes.OBJECT ? 56.0 : 24.0,
-                                color: eyeMode.value == EyeModes.OBJECT
-                                    ? Theme.of(context).accentColor
-                                    : Theme.of(context).primaryColor),
+                                size: eyeMode.value == EyeModes.OBJECT ? 70.0 : 50.0,
+                                color: Theme.of(context).backgroundColor),
                           ),
                           Container(
-                            width: eyeMode.value == EyeModes.CART ? 90.0 : 60.0,
-                            height: eyeMode.value == EyeModes.CART ? 90.0 : 60.0,
+                            width: eyeMode.value == EyeModes.MONEY ? 100.0 : 85.0,
+                            height: eyeMode.value == EyeModes.MONEY ? 100.0 : 85.0,
                             decoration: BoxDecoration(
-                              color: Colors.black12,
+                              color: eyeMode.value == EyeModes.MONEY
+                                  ? AppTheme.fuchsia.shade700
+                                  : AppTheme.violet.shade700,
                               borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                                bottomLeft: Radius.circular(20),
-                                bottomRight: Radius.circular(20),
-                              ),
-                            ),
-                            child: Icon(LineAwesomeIcons.shopping_cart,
-                                size: eyeMode.value == EyeModes.CART ? 56.0 : 24.0,
-                                color: eyeMode.value == EyeModes.CART
-                                    ? Theme.of(context).accentColor
-                                    : Theme.of(context).primaryColor),
-                          ),
-                          Container(
-                            width: eyeMode.value == EyeModes.MONEY ? 90.0 : 60.0,
-                            height: eyeMode.value == EyeModes.MONEY ? 90.0 : 60.0,
-                            decoration: BoxDecoration(
-                              color: Colors.black12,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                                bottomLeft: Radius.circular(20),
-                                bottomRight: Radius.circular(20),
+                                topLeft: Radius.circular(50),
+                                topRight: Radius.circular(50),
+                                bottomLeft: Radius.circular(50),
+                                bottomRight: Radius.circular(50),
                               ),
                             ),
                             child: Icon(LineAwesomeIcons.money_bill,
-                                size: eyeMode.value == EyeModes.MONEY ? 56.0 : 24.0,
-                                color: eyeMode.value == EyeModes.MONEY
-                                    ? Theme.of(context).accentColor
-                                    : Theme.of(context).primaryColor),
+                                size: eyeMode.value == EyeModes.MONEY ? 70.0 : 50.0,
+                                color: Theme.of(context).backgroundColor),
                           ),
                         ],
                       ),

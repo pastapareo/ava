@@ -1,7 +1,4 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'amount.freezed.dart';
-part 'amount.g.dart';
+part of ava.infrastructure.ffdc.api;
 
 @freezed
 abstract class Amount with _$Amount {

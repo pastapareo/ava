@@ -1,15 +1,13 @@
-part of ava.infrastructure.core.api;
+part of ava.infrastructure.voice.api;
 
-class Voice extends ApiEndpointBase {
-  Voice(AvaApiClient client) : super(client);
+class Tts extends VoiceApiEndpointBase {
+  Tts(VoiceApiClient client) : super(client);
 
   AudioPlayer _audioPlayer = AudioPlayer();
   String _regionIdentifier = 'eastus';
   String _subscriptionKey = '5483fc33543442deb1eb1296f5547d24';
   String _accessToken;
   DateTime _accessTokenTimestamp;
-
-  String get _path => 'https://eastus.tts.speech.microsoft.com/cognitiveservices/v1';
 
   Future<void> speak(String text) async {
     final Map<String, String> headers = <String, String>{
@@ -39,7 +37,8 @@ class Voice extends ApiEndpointBase {
 
     final String body = builder.build().toXmlString();
 
-    http.Response request = await http.post(_path, headers: headers, body: body);
+    http.Response request =
+        await http.post(voiceApiEndpoint, headers: headers, body: body);
 
     Uint8List bytes = request.bodyBytes;
 

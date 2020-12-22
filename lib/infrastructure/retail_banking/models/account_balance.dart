@@ -1,8 +1,4 @@
-import 'package:ava/infrastructure/ffdc/amount.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'account_balance.freezed.dart';
-part 'account_balance.g.dart';
+part of ava.infrastructure.ffdc.api;
 
 @freezed
 abstract class AccountBalance with _$AccountBalance {
