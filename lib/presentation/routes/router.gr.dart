@@ -9,12 +9,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../eye/eye_screen.dart';
+import '../eye/ava_vision_screen.dart';
 
 class Routes {
-  static const String eyeScreen = '/';
+  static const String avaVisionScreen = '/';
   static const all = <String>{
-    eyeScreen,
+    avaVisionScreen,
   };
 }
 
@@ -22,17 +22,17 @@ class Router extends RouterBase {
   @override
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
-    RouteDef(Routes.eyeScreen, page: EyeScreen),
+    RouteDef(Routes.avaVisionScreen, page: AvaVisionScreen),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, AutoRouteFactory>{
-    EyeScreen: (data) {
-      final args = data.getArgs<EyeScreenArguments>(
-        orElse: () => EyeScreenArguments(),
+    AvaVisionScreen: (data) {
+      final args = data.getArgs<AvaVisionScreenArguments>(
+        orElse: () => AvaVisionScreenArguments(),
       );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => EyeScreen(key: args.key),
+        builder: (context) => AvaVisionScreen(key: args.key),
         settings: data,
       );
     },
@@ -43,8 +43,8 @@ class Router extends RouterBase {
 /// Arguments holder classes
 /// *************************************************************************
 
-/// EyeScreen arguments holder class
-class EyeScreenArguments {
+/// AvaVisionScreen arguments holder class
+class AvaVisionScreenArguments {
   final Key key;
-  EyeScreenArguments({this.key});
+  AvaVisionScreenArguments({this.key});
 }

@@ -4,10 +4,10 @@ String ffdcApiEndpoint = 'https://api.fusionfabric.cloud/retail-banking';
 String ffdcTokenEndpoint = 'https://api.fusionfabric.cloud/login/v1/sandbox/oidc/token';
 
 enum EyeModes {
-  OCR,
+  TEXT,
   OBJECT,
-  CART,
-  MONEY,
+  BANK_NOTE,
+  DOCUMENT,
 }
 
 EyeModes nextMode(EyeModes value) {
