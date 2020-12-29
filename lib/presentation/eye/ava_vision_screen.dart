@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:ava/data/data.dart';
+import 'package:ava/presentation/core/app_theme.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../infrastructure/vision/models/line.dart';
 import '../../infrastructure/vision/models/ocr_response.dart';
@@ -90,14 +92,15 @@ class _AvaVisionScreenState extends State<AvaVisionScreen> {
     } else if (_eyeMode.value == EyeModes.OBJECT) {
       _eyeMode.value = EyeModes.OBJECT;
       _speak('Scan object');
-      _mockProduct();
+      _mockAddItem();
     } else if (_eyeMode.value == EyeModes.BANK_NOTE) {
       _eyeMode.value = EyeModes.BANK_NOTE;
       _speak('Scan bank note');
       _mockBankNote();
     } else if (_eyeMode.value == EyeModes.DOCUMENT) {
       _eyeMode.value = EyeModes.DOCUMENT;
-      _speak('Scan document');
+      _speak('Checkout cart');
+      _mockCart();
       //_showCart();
     }
     setState(() {});
@@ -171,85 +174,191 @@ class _AvaVisionScreenState extends State<AvaVisionScreen> {
     _stopScanning = true;
 
     Timer(const Duration(seconds: 3), () async {
-      _speak('\$100');
+      _speak('\$20.00');
     });
   }
 
-  _mockProduct() async {
+  _mockAddItem() async {
     _stopScanning = true;
 
-    Timer(const Duration(seconds: 3), () async {
-      _speak(swiss_miss);
+    Timer(const Duration(seconds: 4), () async {
+      _speak(swiss_miss_barcode);
 
       Timer(const Duration(seconds: 3), () async {
-        _stopScanning = false;
-      });
-    });
-  }
+        Alert(
+          context: context,
+          type: AlertType.none,
+          title: 'Add to cart',
+          content: Column(
+            children: [
+              Image.asset('assets/swissmiss.png'),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                swiss_miss_text,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ],
+          ),
+          alertAnimation: FadeAlertAnimation,
+          style: cartStyle,
+          buttons: [
+            DialogButton(
+              child: Text(
+                "No",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () {},
+              width: 120,
+            ),
+            DialogButton(
+              child: Text(
+                "Yes",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => {},
+              width: 120,
+            )
+          ],
+        ).show();
 
-  /*
-  _checkProduct() async {
-    _stopScanning = false;
-    final VisionApiClient visionClient = await getIt.getAsync<VisionApiClient>();
-    final VoiceApiClient voiceClient = await getIt.getAsync<VoiceApiClient>();
-    print('Start ${DateTime.now()}');
-    Timer(const Duration(seconds: 1), () async {
-      print('Speak ${DateTime.now()}');
-      await voiceClient.tts.speak('Swiss Miss hot cocoa mix');
-      setState(() {
-        _response = 'Swiss Miss hot cocoa mix';
-      });
-      Timer(const Duration(seconds: 3), () async {
-        print('Speak ${DateTime.now()}');
-        await voiceClient.tts.speak('Swiss Miss Marshmallow 28 grams');
-        setState(() {
-          _response = 'Swiss Miss Marshmallow 28 grams';
-        });
-        Timer(const Duration(seconds: 2), () async {
-          print('Speak ${DateTime.now()}');
-          await voiceClient.tts.speak(
-              'Swiss Miss hot cocoa mix was added to your cart. Your total balance is now \$2.45');
-          setState(() {
-            _response =
-                'Swiss Miss hot cocoa mix was added to your cart. Your total balance is now \$2.45';
+        Timer(const Duration(seconds: 5), () async {
+          _speak(add_to_cart);
+
+          Timer(const Duration(seconds: 5), () async {
+            Navigator.pop(context);
+            _mockAddToCart(context);
           });
         });
       });
     });
   }
 
-  _showCart() async {
-    _stopScanning = false;
-    AwesomeDialog(
-        context: context,
-        animType: AnimType.LEFTSLIDE,
-        headerAnimationLoop: false,
-        dialogType: DialogType.INFO,
-        title: 'Your Cart',
-        desc: 'You\'re about to pay \$2.44',
-        body: Center(
-          child: Column(
-            children: [
-              Text('Checkout two items for \$2.44'),
-              Image.network('https://blog.minhazav.dev/images/post14_image1.png'),
-            ],
-          ),
-        ),
-        btnCancelOnPress: () {},
-        btnOkOnPress: () {},
-        onDissmissCallback: () {
-          debugPrint('Dialog Dissmiss from callback');
-        })
-      ..show();
-    final VisionApiClient visionClient = await getIt.getAsync<VisionApiClient>();
-    final VoiceApiClient voiceClient = await getIt.getAsync<VoiceApiClient>();
-    await voiceClient.tts
-        .speak('You\'re about to checkout 2 items with a total amount of \$2.44');
-    setState(() {
-      _response = 'You\'re about to checkout 2 items with a total amount of \$2.44';
-    });
+  _mockAddToCart(context) {
+    _speak(swiss_miss_add_to_cart);
 
-    // await client.ffdc.getBalance();
-    // await client.ffdc.createPayment('0543123467001', '0543123467030', 'Peter Parker');
-  } */
+    Timer(const Duration(seconds: 4), () async {
+      Alert(
+        context: context,
+        type: AlertType.success,
+        title: 'Added to cart',
+        alertAnimation: FadeAlertAnimation,
+        style: cartStyle,
+        buttons: [
+          DialogButton(
+            child: Text(
+              "No",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () {},
+            width: 120,
+          ),
+          DialogButton(
+            child: Text(
+              "Yes",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => {},
+            width: 120,
+          )
+        ],
+      ).show();
+
+      Timer(const Duration(seconds: 7), () async {
+        Navigator.pop(context);
+      });
+    });
+  }
+
+  _mockCart() async {
+    _stopScanning = true;
+
+    Timer(const Duration(seconds: 4), () async {
+      _speak(checkout_cart_speak);
+
+      Alert(
+        context: context,
+        type: AlertType.none,
+        title: 'Your Cart',
+        content: Column(
+          children: [
+            SizedBox(
+              height: 10,
+            ),
+            Image.asset('assets/qrcode.png'),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              checkout_cart_text,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ],
+        ),
+        alertAnimation: FadeAlertAnimation,
+        style: cartStyle,
+        buttons: [
+          DialogButton(
+            child: Text(
+              "No",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () {},
+            width: 120,
+          ),
+          DialogButton(
+            child: Text(
+              "Yes",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => {},
+            width: 120,
+          )
+        ],
+      ).show();
+
+      Timer(const Duration(seconds: 10), () async {
+        Navigator.pop(context);
+        _speak(checkout_success);
+      });
+    });
+  }
+
+  Widget FadeAlertAnimation(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
+    return Align(
+      child: FadeTransition(
+        opacity: animation,
+        child: child,
+      ),
+    );
+  }
+
+  var cartStyle = AlertStyle(
+      animationType: AnimationType.grow,
+      isCloseButton: false,
+      isOverlayTapDismiss: true,
+      animationDuration: Duration(milliseconds: 400),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        side: BorderSide(
+          color: Colors.blueGrey,
+        ),
+      ),
+      backgroundColor: AppTheme.nearWhite,
+      descStyle: TextStyle(
+        color: AppTheme.charcoal,
+        fontSize: 16.0,
+      ),
+      titleStyle: TextStyle(
+        color: AppTheme.violet,
+        fontSize: 25.0,
+      ),
+
+      // constraints: BoxConstraints.expand(width: 300),
+      //First to chars "55" represents transparency of color
+      // overlayColor: AppTheme.gray,
+      alertElevation: 0,
+      alertAlignment: Alignment.center);
 }

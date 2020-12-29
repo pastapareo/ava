@@ -21,6 +21,7 @@ dependencies:
   image: ^2.1.19
   line_awesome_flutter: ^1.0.1
   path_provider: ^1.6.24
+  rflutter_alert: ^1.1.0
   simple_logger: ^1.7.0
   xml: ^4.2.0
   uuid: ^2.0.1
@@ -38,3 +39,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/swissmiss.png
+    - assets/qrcode.png

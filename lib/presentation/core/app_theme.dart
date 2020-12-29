@@ -78,6 +78,7 @@ class AppTheme {
       backgroundColor: white,
       scaffoldBackgroundColor: white,
       canvasColor: white,
+      dialogBackgroundColor: background,
       indicatorColor: white,
       errorColor: crimson,
       buttonColor: violet,

@@ -84,7 +84,7 @@ class BottomBar extends StatelessWidget {
                             borderRadius: BorderRadius.circular(50.0),
                           ),
                           child: GestureDetector(
-                            child: Icon(LineAwesomeIcons.font,
+                            child: Icon(LineAwesomeIcons.file,
                                 size: eyeMode.value == EyeModes.TEXT ? 70.0 : 50.0,
                                 color: Theme.of(context).backgroundColor),
                             onTap: () {
@@ -141,7 +141,7 @@ class BottomBar extends StatelessWidget {
                             borderRadius: BorderRadius.circular(50.0),
                           ),
                           child: GestureDetector(
-                            child: Icon(LineAwesomeIcons.file,
+                            child: Icon(LineAwesomeIcons.shopping_cart,
                                 size: eyeMode.value == EyeModes.DOCUMENT ? 70.0 : 50.0,
                                 color: Theme.of(context).backgroundColor),
                             onTap: () {
